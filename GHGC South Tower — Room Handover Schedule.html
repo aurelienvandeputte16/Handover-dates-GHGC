@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://ghgc-handover.netlify.app/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHGC South Tower — Room Handover Schedule</title>
+<link href="./GHGC South Tower — Room Handover Schedule_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C1117;
+  --bg-card: #161D27;
+  --bg-row: #111820;
+  --bg-row-alt: #141C26;
+  --bg-hover: #1C2A3A;
+  --border: #222E3D;
+  --border-light: #2E3E52;
+  --text: #E8EDF3;
+  --text-dim: #8494A7;
+  --text-muted: #556273;
+  --orange: #FF6B35;
+  --orange-glow: rgba(255,107,53,0.25);
+  --green: #10B981;
+  --green-dim: rgba(16,185,129,0.15);
+  --red: #EF4444;
+  --yellow: #F59E0B;
+  --yellow-dim: rgba(245,158,11,0.12);
+  --purple: #8B5CF6;
+  --purple-dim: rgba(139,92,246,0.12);
+  --cyan: #22D3EE;
+  --blue: #3B82F6;
+  --radius: 8px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  /* Room type colors */
+  --type-a: #3B82F6;
+  --type-b: #8B5CF6;
+  --type-f: #F59E0B;
+  --type-g: #10B981;
+  --type-h: #FF6B35;
+  --type-i: #EC4899;
+  --type-j: #06B6D4;
+  --type-k: #EF4444;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #161D27 0%, #0C1117 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-left { display:flex; align-items:center; gap:16px; }
+.logo {
+  width:42px; height:42px; background:var(--orange); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:10px; color:white; letter-spacing:0.5px;
+}
+.header-title h1 { font-size:17px; font-weight:700; letter-spacing:-0.3px; }
+.header-title h1 span { color:var(--orange); }
+.header-title p { font-size:11px; color:var(--text-dim); margin-top:1px; }
+.header-right { display:flex; gap:8px; }
+
+.btn {
+  padding:7px 14px; border-radius:6px; font-family:'DM Sans'; font-size:12px;
+  font-weight:600; cursor:pointer; border:none; transition:all 0.15s;
+}
+.btn-ghost { background:transparent; color:var(--text-dim); border:1px solid var(--border); }
+.btn-ghost:hover { background:var(--bg-hover); color:var(--text); }
+.btn-primary { background:var(--orange); color:white; }
+.btn-primary:hover { background:#e55a28; }
+
+/* KPIs */
+.kpi-strip {
+  display:flex; gap:1px; background:var(--border);
+  border-bottom:1px solid var(--border);
+}
+.kpi {
+  flex:1; background:var(--bg-card); padding:14px 20px;
+  display:flex; align-items:center; gap:12px;
+}
+.kpi-num { font-size:24px; font-weight:700; font-family:'JetBrains Mono'; letter-spacing:-0.5px; }
+.kpi-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.8px; font-weight:500; }
+.kpi-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+/* CONTROLS */
+.controls {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 28px; border-bottom:1px solid var(--border); background:var(--bg-card);
+  flex-wrap: wrap; gap: 8px;
+}
+.controls-left { display:flex; gap:6px; flex-wrap:wrap; }
+.pill {
+  padding:5px 12px; border-radius:16px; font-size:11px; font-weight:600;
+  cursor:pointer; border:1px solid var(--border); background:transparent;
+  color:var(--text-dim); font-family:'DM Sans'; transition:all 0.15s;
+}
+.pill:hover { border-color:var(--text-dim); color:var(--text); }
+.pill.on { background:var(--orange); border-color:var(--orange); color:white; }
+
+.controls-right { display:flex; align-items:center; gap:14px; }
+.legend { display:flex; gap:12px; align-items:center; }
+.leg { display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-dim); }
+.leg-dot { width:8px; height:8px; border-radius:2px; }
+
+.zoom-ctrl { display:flex; align-items:center; gap:6px; }
+.zbtn {
+  width:26px; height:26px; border-radius:5px; border:1px solid var(--border);
+  background:transparent; color:var(--text-dim); cursor:pointer;
+  font-size:14px; display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono';
+}
+.zbtn:hover { background:var(--bg-hover); color:var(--text); }
+.zlabel { font-size:10px; color:var(--text-muted); font-family:'JetBrains Mono'; min-width:36px; text-align:center; }
+
+/* TYPE LEGEND */
+.type-legend {
+  display:flex; gap:8px; align-items:center; padding:6px 28px;
+  border-bottom:1px solid var(--border); background:var(--bg-card);
+  flex-wrap:wrap;
+}
+.type-legend-title { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.8px; font-weight:600; margin-right:4px; }
+.type-chip {
+  display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-dim);
+  padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.04);
+  cursor:pointer; border:1px solid transparent; transition:all 0.15s;
+}
+.type-chip:hover { border-color:var(--border-light); background:rgba(255,255,255,0.08); }
+.type-chip.active { border-color:var(--orange); background:var(--orange-glow); color:var(--text); }
+.tcdot { width:6px; height:6px; border-radius:2px; }
+
+/* GANTT */
+.gantt-wrap { overflow:auto; max-height:calc(100vh - 260px); }
+.gantt-wrap::-webkit-scrollbar { height:8px; width:8px; }
+.gantt-wrap::-webkit-scrollbar-track { background:var(--bg); }
+.gantt-wrap::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+
+.tl-header {
+  display:flex; border-bottom:1px solid var(--border);
+  background:var(--bg-card); position:sticky; top:0; z-index:50;
+}
+.label-col {
+  min-width:200px; max-width:200px; padding:8px 14px;
+  display:flex; align-items:flex-end;
+  font-size:10px; color:var(--text-muted); text-transform:uppercase;
+  letter-spacing:0.8px; font-weight:600;
+  border-right:1px solid var(--border); background:inherit;
+  position:sticky; left:0; z-index:10;
+}
+.tl-dates { display:flex; flex:1; }
+.tl-month { display:flex; flex-direction:column; border-right:1px solid var(--border); }
+.mo-label {
+  padding:3px 0; text-align:center; font-size:10px; font-weight:600;
+  color:var(--orange); text-transform:uppercase; letter-spacing:1.2px;
+  border-bottom:1px solid var(--border); background:rgba(255,107,53,0.04);
+}
+.mo-weeks { display:flex; }
+.wk {
+  text-align:center; font-size:8px; color:var(--text-muted);
+  padding:3px 0; font-family:'JetBrains Mono';
+  border-right:1px solid rgba(34,46,61,0.5);
+}
+
+/* Level group */
+.lvl-group { border-bottom:2px solid var(--border); }
+.lvl-hdr {
+  display:flex; align-items:center; cursor:pointer; transition:background 0.1s;
+  background:var(--bg-card); border-bottom:1px solid var(--border);
+}
+.lvl-hdr:hover { background:var(--bg-hover); }
+.lvl-hdr-label {
+  min-width:200px; max-width:200px; padding:8px 14px;
+  display:flex; align-items:center; gap:10px;
+  border-right:1px solid var(--border);
+  position:sticky; left:0; z-index:10; background:inherit;
+}
+.lvl-badge {
+  padding:4px 10px; border-radius:5px; font-size:13px; font-weight:700;
+  background:var(--orange-glow); color:var(--orange); font-family:'JetBrains Mono';
+}
+.lvl-meta { display:flex; flex-direction:column; gap:1px; }
+.lvl-name { font-size:13px; font-weight:600; }
+.lvl-cnt { font-size:10px; color:var(--text-dim); font-family:'JetBrains Mono'; }
+.caret { margin-left:auto; font-size:12px; color:var(--text-muted); transition:transform 0.2s; }
+.lvl-hdr.collapsed .caret { transform:rotate(-90deg); }
+.lvl-tl { flex:1; height:38px; position:relative; }
+.sum-bar {
+  position:absolute; height:14px; top:12px; border-radius:3px;
+  background:linear-gradient(90deg,#FF6B35,#FF8F65); opacity:0.45;
+  transition:opacity 0.15s;
+}
+.lvl-hdr:hover .sum-bar { opacity:0.7; }
+
+/* Room row */
+.rrow {
+  display:flex; align-items:center; height:30px;
+  border-bottom:1px solid rgba(34,46,61,0.35); transition:background 0.08s;
+}
+.rrow:nth-child(odd) { background:var(--bg-row); }
+.rrow:nth-child(even) { background:var(--bg-row-alt); }
+.rrow:hover { background:var(--bg-hover); }
+
+.rlabel {
+  min-width:200px; max-width:200px; padding:0 14px;
+  display:flex; align-items:center; gap:8px; height:100%;
+  border-right:1px solid var(--border);
+  position:sticky; left:0; z-index:5; background:inherit;
+}
+.rrow:hover .rlabel { background:var(--bg-hover); }
+
+.rnum { font-size:12px; font-weight:600; font-family:'JetBrains Mono'; min-width:42px; }
+.rtype {
+  font-size:9px; font-weight:700; padding:1px 6px; border-radius:3px;
+  letter-spacing:0.4px; text-transform:uppercase;
+}
+.rstatus { width:6px; height:6px; border-radius:50%; margin-left:auto; flex-shrink:0; }
+.rtl { flex:1; height:100%; position:relative; cursor:pointer; }
+
+/* Bars & milestones */
+.gbar {
+  position:absolute; height:14px; top:8px; border-radius:3px;
+  cursor:pointer; transition:all 0.12s;
+  display:flex; align-items:center; padding:0 5px;
+  font-size:8px; font-weight:600; color:white;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.gbar:hover { height:18px; top:6px; filter:brightness(1.2); z-index:5; }
+
+.mstone {
+  position:absolute; top:5px; width:20px; height:20px;
+  transform:translateX(-10px); cursor:pointer; z-index:6;
+}
+.mdiamond {
+  width:10px; height:10px; transform:rotate(45deg); margin:5px auto;
+  border:2px solid var(--bg); transition:all 0.12s;
+}
+.mstone:hover .mdiamond { transform:rotate(45deg) scale(1.4); }
+.mstone.inspection .mdiamond { background:var(--blue); }
+.mstone.reinspection .mdiamond { background:var(--yellow); }
+.mstone.handover .mdiamond { background:var(--green); }
+
+.today-line {
+  position:absolute; top:0; bottom:0; width:2px; background:var(--red);
+  z-index:20; pointer-events:none;
+}
+.today-line::after {
+  content:'TODAY'; position:absolute; top:-16px; left:-14px;
+  font-size:7px; font-weight:700; color:var(--red);
+  letter-spacing:0.5px; font-family:'JetBrains Mono';
+}
+
+.hidden { display:none; }
+
+/* Tooltip */
+.tt {
+  position:fixed; background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:12px 16px; box-shadow:var(--shadow);
+  z-index:1000; pointer-events:none; opacity:0; transition:opacity 0.12s;
+  max-width:260px;
+}
+.tt.vis { opacity:1; }
+.tt h4 { font-size:13px; font-weight:700; margin-bottom:6px; }
+.tt-r { display:flex; justify-content:space-between; font-size:11px; padding:2px 0; }
+.tt-r .l { color:var(--text-dim); }
+.tt-r .v { font-weight:600; font-family:'JetBrains Mono'; }
+
+/* Modal */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:500;
+  display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px);
+}
+.modal-bg.open { display:flex; }
+.modal {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+  padding:24px; width:440px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  animation:mIn 0.2s ease;
+}
+@keyframes mIn { from{opacity:0;transform:scale(0.95) translateY(10px)} to{opacity:1;transform:none} }
+.modal h3 { font-size:17px; font-weight:700; margin-bottom:16px; }
+.modal h3 span { color:var(--orange); }
+.fg { margin-bottom:12px; }
+.fg label {
+  display:block; font-size:10px; font-weight:600; color:var(--text-dim);
+  text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px;
+}
+.fg input, .fg select {
+  width:100%; padding:7px 10px; border:1px solid var(--border); border-radius:6px;
+  background:var(--bg); color:var(--text); font-family:'JetBrains Mono'; font-size:13px;
+}
+.fg input:focus, .fg select:focus { outline:none; border-color:var(--orange); box-shadow:0 0 0 3px var(--orange-glow); }
+.fg select option { background:var(--bg-card); }
+.frow { display:flex; gap:10px; }
+.frow .fg { flex:1; }
+.mactions { display:flex; gap:8px; margin-top:16px; justify-content:flex-end; }
+
+/* Instructions toast */
+.toast {
+  position:fixed; bottom:20px; right:20px; background:var(--bg-card);
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:14px 18px; box-shadow:var(--shadow); z-index:200; max-width:300px;
+  animation:slideUp 0.4s ease;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+.toast h4 { font-size:12px; font-weight:700; color:var(--orange); margin-bottom:6px; }
+.toast p { font-size:11px; color:var(--text-dim); line-height:1.6; }
+.toast .x {
+  position:absolute; top:6px; right:8px; background:none; border:none;
+  color:var(--text-muted); cursor:pointer; font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">AME</div>
+    <div class="header-title">
+      <h1><span>South Tower</span> — Handover Schedule</h1>
+      <p>Grand Hyatt Grand Cayman · Levels 3–10 · 138 Rooms</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-ghost" onclick="exportJSON()">⬇ Export</button>
+    <button class="btn btn-ghost" onclick="document.getElementById(&#39;imp&#39;).click()">⬆ Import</button>
+    <button class="btn btn-primary" onclick="openBulk()">+ Set Dates</button>
+  </div>
+</div>
+
+<div class="kpi-strip" id="kpis">
+    <div class="kpi"><div class="kpi-dot" style="background:var(--orange)"></div><div><div class="kpi-num">138</div><div class="kpi-label">Total Rooms</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--blue)"></div><div><div class="kpi-num">3</div><div class="kpi-label">Inspection</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--yellow)"></div><div><div class="kpi-num">1</div><div class="kpi-label">Re-inspection</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--green)"></div><div><div class="kpi-num">3</div><div class="kpi-label">Handover</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--red)"></div><div><div class="kpi-num">14</div><div class="kpi-label">Blocked</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--text-muted)"></div><div><div class="kpi-num">135</div><div class="kpi-label">Pending</div></div></div>
+  </div>
+
+<div class="controls">
+  <div class="controls-left" id="filters"><button class="pill on" onclick="setF(&#39;all&#39;)">All Levels</button><button class="pill " onclick="setF(&#39;L3&#39;)">L3</button><button class="pill " onclick="setF(&#39;L4&#39;)">L4</button><button class="pill " onclick="setF(&#39;L5&#39;)">L5</button><button class="pill " onclick="setF(&#39;L6&#39;)">L6</button><button class="pill " onclick="setF(&#39;L7&#39;)">L7</button><button class="pill " onclick="setF(&#39;L8&#39;)">L8</button><button class="pill " onclick="setF(&#39;L9&#39;)">L9</button><button class="pill " onclick="setF(&#39;L10&#39;)">L10</button></div>
+  <div class="controls-right">
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--blue);transform:rotate(45deg)"></div>Inspection</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--yellow);transform:rotate(45deg)"></div>Re-inspection</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--green);transform:rotate(45deg)"></div>Handover</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--red);border-radius:50%"></div>Today</div>
+      <div class="leg"><div class="leg-dot" style="background:repeating-linear-gradient(135deg,transparent,transparent 2px,var(--red) 2px,var(--red) 4px);border-radius:2px"></div>Blocked</div>
+    </div>
+    <div class="zoom-ctrl">
+      <button class="zbtn" onclick="zOut()">−</button>
+      <span class="zlabel" id="zl">60</span>
+      <button class="zbtn" onclick="zIn()">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="type-legend" id="typeLegend"><span class="type-legend-title">Room Types</span><div class="type-chip " onclick="toggleType(&#39;A&#39;)"><div class="tcdot" style="background:#3B82F6"></div>A</div><div class="type-chip " onclick="toggleType(&#39;Ahc&#39;)"><div class="tcdot" style="background:#3B82F6"></div>Ahc</div><div class="type-chip " onclick="toggleType(&#39;B&#39;)"><div class="tcdot" style="background:#8B5CF6"></div>B</div><div class="type-chip " onclick="toggleType(&#39;F&#39;)"><div class="tcdot" style="background:#F59E0B"></div>F</div><div class="type-chip " onclick="toggleType(&#39;Fhc&#39;)"><div class="tcdot" style="background:#F59E0B"></div>Fhc</div><div class="type-chip " onclick="toggleType(&#39;G&#39;)"><div class="tcdot" style="background:#10B981"></div>G</div><div class="type-chip " onclick="toggleType(&#39;Ghc&#39;)"><div class="tcdot" style="background:#10B981"></div>Ghc</div><div class="type-chip " onclick="toggleType(&#39;H&#39;)"><div class="tcdot" style="background:#FF6B35"></div>H</div><div class="type-chip " onclick="toggleType(&#39;I&#39;)"><div class="tcdot" style="background:#EC4899"></div>I</div><div class="type-chip " onclick="toggleType(&#39;Ihc&#39;)"><div class="tcdot" style="background:#EC4899"></div>Ihc</div><div class="type-chip " onclick="toggleType(&#39;Im&#39;)"><div class="tcdot" style="background:#EC4899"></div>Im</div><div class="type-chip " onclick="toggleType(&#39;J&#39;)"><div class="tcdot" style="background:#06B6D4"></div>J</div><div class="type-chip " onclick="toggleType(&#39;J1&#39;)"><div class="tcdot" style="background:#06B6D4"></div>J1</div><div class="type-chip " onclick="toggleType(&#39;K&#39;)"><div class="tcdot" style="background:#EF4444"></div>K</div><div class="type-chip " onclick="toggleType(&#39;Kr&#39;)"><div class="tcdot" style="background:#EF4444"></div>Kr</div></div>
+
+<div class="gantt-wrap" id="gw">
+  <div id="gc"><div style="position:relative">
+    <div class="tl-header"><div class="label-col">Room</div><div class="tl-dates" style="width:2854.285714285714px;min-width:2854.285714285714px"><div class="tl-month"><div class="mo-label">Apr 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">May 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Jun 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Jul 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Aug 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Sep 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Oct 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Nov 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Dec 2026</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Jan 2027</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div><div class="wk" style="width:60px">29</div></div></div><div class="tl-month"><div class="mo-label">Feb 2027</div><div class="mo-weeks"><div class="wk" style="width:60px">1</div><div class="wk" style="width:60px">8</div><div class="wk" style="width:60px">15</div><div class="wk" style="width:60px">22</div></div></div></div></div>
+    <div style="position:relative"><div class="today-line" style="left:394.6117677579365px"></div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L3&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L3</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 3 South</span><span class="lvl-cnt">22 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div class="sum-bar" style="left:126.78571428571429px;width:188.57142857142856px"></div></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;350&#39;)">
+          <div class="rlabel"><span class="rnum">350</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;351&#39;)">
+          <div class="rlabel"><span class="rnum">351</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--green)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div class="gbar" style="left:195.35714285714286px;width:119.99999999999997px;background:linear-gradient(90deg,#3B82F6,#3B82F6aa)" onmouseenter="showTT(event,&#39;L3&#39;,&#39;351&#39;)" onmouseleave="hideTT()"></div><div class="mstone inspection" style="left:195.35714285714286px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;351&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div><div class="mstone handover" style="left:315.35714285714283px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;351&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;352&#39;)">
+          <div class="rlabel"><span class="rnum">352</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;353&#39;)">
+          <div class="rlabel"><span class="rnum">353</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--green)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div class="gbar" style="left:195.35714285714286px;width:119.99999999999997px;background:linear-gradient(90deg,#8B5CF6,#8B5CF6aa)" onmouseenter="showTT(event,&#39;L3&#39;,&#39;353&#39;)" onmouseleave="hideTT()"></div><div class="mstone inspection" style="left:195.35714285714286px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;353&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div><div class="mstone handover" style="left:315.35714285714283px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;353&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;354&#39;)">
+          <div class="rlabel"><span class="rnum">354</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;355&#39;)">
+          <div class="rlabel"><span class="rnum">355</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;356&#39;)">
+          <div class="rlabel"><span class="rnum">356</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;357&#39;)">
+          <div class="rlabel"><span class="rnum">357</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;358&#39;)">
+          <div class="rlabel"><span class="rnum">358</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;359&#39;)">
+          <div class="rlabel"><span class="rnum">359</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;360&#39;)">
+          <div class="rlabel"><span class="rnum">360</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;361&#39;)">
+          <div class="rlabel"><span class="rnum">361</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;362&#39;)">
+          <div class="rlabel"><span class="rnum">362</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--purple)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div class="gbar" style="left:126.78571428571429px;width:188.57142857142856px;background:linear-gradient(90deg,#F59E0B,#F59E0Baa)" onmouseenter="showTT(event,&#39;L3&#39;,&#39;362&#39;)" onmouseleave="hideTT()"></div><div class="mstone inspection" style="left:126.78571428571429px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;362&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div><div class="mstone reinspection" style="left:195.35714285714286px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;362&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div><div class="mstone handover" style="left:315.35714285714283px" onmouseenter="showTT(event,&#39;L3&#39;,&#39;362&#39;)" onmouseleave="hideTT()"><div class="mdiamond"></div></div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;363&#39;)">
+          <div class="rlabel"><span class="rnum">363</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;364&#39;)">
+          <div class="rlabel"><span class="rnum">364</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;365&#39;)">
+          <div class="rlabel"><span class="rnum">365</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;366&#39;)">
+          <div class="rlabel"><span class="rnum">366</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;367&#39;)">
+          <div class="rlabel"><span class="rnum">367</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;368&#39;)">
+          <div class="rlabel"><span class="rnum">368</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;369&#39;)">
+          <div class="rlabel"><span class="rnum">369</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;370&#39;)">
+          <div class="rlabel"><span class="rnum">370</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L3&#39;,&#39;371&#39;)">
+          <div class="rlabel"><span class="rnum">371</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L4&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L4</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 4 South</span><span class="lvl-cnt">19 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;450&#39;)">
+          <div class="rlabel"><span class="rnum">450</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;451&#39;)">
+          <div class="rlabel"><span class="rnum">451</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;452&#39;)">
+          <div class="rlabel"><span class="rnum">452</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;453&#39;)">
+          <div class="rlabel"><span class="rnum">453</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;454&#39;)">
+          <div class="rlabel"><span class="rnum">454</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;455&#39;)">
+          <div class="rlabel"><span class="rnum">455</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;456&#39;)">
+          <div class="rlabel"><span class="rnum">456</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;457&#39;)">
+          <div class="rlabel"><span class="rnum">457</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;458&#39;)">
+          <div class="rlabel"><span class="rnum">458</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;459&#39;)">
+          <div class="rlabel"><span class="rnum">459</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;460&#39;)">
+          <div class="rlabel"><span class="rnum">460</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;461&#39;)">
+          <div class="rlabel"><span class="rnum">461</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;462&#39;)">
+          <div class="rlabel"><span class="rnum">462</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;463&#39;)">
+          <div class="rlabel"><span class="rnum">463</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;464&#39;)">
+          <div class="rlabel"><span class="rnum">464</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;465&#39;)">
+          <div class="rlabel"><span class="rnum">465</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;466&#39;)">
+          <div class="rlabel"><span class="rnum">466</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;467&#39;)">
+          <div class="rlabel"><span class="rnum">467</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L4&#39;,&#39;468&#39;)">
+          <div class="rlabel"><span class="rnum">468</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L5&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L5</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 5 South</span><span class="lvl-cnt">18 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;550&#39;)">
+          <div class="rlabel"><span class="rnum">550</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;551&#39;)">
+          <div class="rlabel"><span class="rnum">551</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;552&#39;)">
+          <div class="rlabel"><span class="rnum">552</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;553&#39;)">
+          <div class="rlabel"><span class="rnum">553</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;554&#39;)">
+          <div class="rlabel"><span class="rnum">554</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;555&#39;)">
+          <div class="rlabel"><span class="rnum">555</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;556&#39;)">
+          <div class="rlabel"><span class="rnum">556</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;557&#39;)">
+          <div class="rlabel"><span class="rnum">557</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;558&#39;)">
+          <div class="rlabel"><span class="rnum">558</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;559&#39;)">
+          <div class="rlabel"><span class="rnum">559</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;560&#39;)">
+          <div class="rlabel"><span class="rnum">560</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;561&#39;)">
+          <div class="rlabel"><span class="rnum">561</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;562&#39;)">
+          <div class="rlabel"><span class="rnum">562</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;563&#39;)">
+          <div class="rlabel"><span class="rnum">563</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;564&#39;)">
+          <div class="rlabel"><span class="rnum">564</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;565&#39;)">
+          <div class="rlabel"><span class="rnum">565</span><span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span><div class="rstatus" style="background:var(--red)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div><div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:&#39;JetBrains Mono&#39;;opacity:0.7;pointer-events:none">BLOCKED</div></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;566&#39;)">
+          <div class="rlabel"><span class="rnum">566</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L5&#39;,&#39;567&#39;)">
+          <div class="rlabel"><span class="rnum">567</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L6&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L6</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 6 South</span><span class="lvl-cnt">17 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;650&#39;)">
+          <div class="rlabel"><span class="rnum">650</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;651&#39;)">
+          <div class="rlabel"><span class="rnum">651</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;652&#39;)">
+          <div class="rlabel"><span class="rnum">652</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;653&#39;)">
+          <div class="rlabel"><span class="rnum">653</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;654&#39;)">
+          <div class="rlabel"><span class="rnum">654</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;655&#39;)">
+          <div class="rlabel"><span class="rnum">655</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;656&#39;)">
+          <div class="rlabel"><span class="rnum">656</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;657&#39;)">
+          <div class="rlabel"><span class="rnum">657</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;658&#39;)">
+          <div class="rlabel"><span class="rnum">658</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;659&#39;)">
+          <div class="rlabel"><span class="rnum">659</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;660&#39;)">
+          <div class="rlabel"><span class="rnum">660</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;661&#39;)">
+          <div class="rlabel"><span class="rnum">661</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;662&#39;)">
+          <div class="rlabel"><span class="rnum">662</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;663&#39;)">
+          <div class="rlabel"><span class="rnum">663</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;664&#39;)">
+          <div class="rlabel"><span class="rnum">664</span><span class="rtype" style="background:#06B6D422;color:#06B6D4">J</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;664a&#39;)">
+          <div class="rlabel"><span class="rnum">664a</span><span class="rtype" style="background:#06B6D422;color:#06B6D4">J1</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L6&#39;,&#39;665&#39;)">
+          <div class="rlabel"><span class="rnum">665</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L7&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L7</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 7 South</span><span class="lvl-cnt">15 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;750&#39;)">
+          <div class="rlabel"><span class="rnum">750</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;751&#39;)">
+          <div class="rlabel"><span class="rnum">751</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;752&#39;)">
+          <div class="rlabel"><span class="rnum">752</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;753&#39;)">
+          <div class="rlabel"><span class="rnum">753</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;754&#39;)">
+          <div class="rlabel"><span class="rnum">754</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;755&#39;)">
+          <div class="rlabel"><span class="rnum">755</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;756&#39;)">
+          <div class="rlabel"><span class="rnum">756</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;757&#39;)">
+          <div class="rlabel"><span class="rnum">757</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;758&#39;)">
+          <div class="rlabel"><span class="rnum">758</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;759&#39;)">
+          <div class="rlabel"><span class="rnum">759</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;760&#39;)">
+          <div class="rlabel"><span class="rnum">760</span><span class="rtype" style="background:#EF444422;color:#EF4444">K</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;761&#39;)">
+          <div class="rlabel"><span class="rnum">761</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;762&#39;)">
+          <div class="rlabel"><span class="rnum">762</span><span class="rtype" style="background:#EF444422;color:#EF4444">Kr</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;763&#39;)">
+          <div class="rlabel"><span class="rnum">763</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L7&#39;,&#39;765&#39;)">
+          <div class="rlabel"><span class="rnum">765</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L8&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L8</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 8 South</span><span class="lvl-cnt">15 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;850&#39;)">
+          <div class="rlabel"><span class="rnum">850</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;851&#39;)">
+          <div class="rlabel"><span class="rnum">851</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;852&#39;)">
+          <div class="rlabel"><span class="rnum">852</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;853&#39;)">
+          <div class="rlabel"><span class="rnum">853</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;854&#39;)">
+          <div class="rlabel"><span class="rnum">854</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;855&#39;)">
+          <div class="rlabel"><span class="rnum">855</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;856&#39;)">
+          <div class="rlabel"><span class="rnum">856</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;857&#39;)">
+          <div class="rlabel"><span class="rnum">857</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;858&#39;)">
+          <div class="rlabel"><span class="rnum">858</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;859&#39;)">
+          <div class="rlabel"><span class="rnum">859</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;860&#39;)">
+          <div class="rlabel"><span class="rnum">860</span><span class="rtype" style="background:#EF444422;color:#EF4444">K</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;861&#39;)">
+          <div class="rlabel"><span class="rnum">861</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;862&#39;)">
+          <div class="rlabel"><span class="rnum">862</span><span class="rtype" style="background:#EF444422;color:#EF4444">Kr</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;863&#39;)">
+          <div class="rlabel"><span class="rnum">863</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L8&#39;,&#39;865&#39;)">
+          <div class="rlabel"><span class="rnum">865</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L9&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L9</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 9 South</span><span class="lvl-cnt">15 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;950&#39;)">
+          <div class="rlabel"><span class="rnum">950</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;951&#39;)">
+          <div class="rlabel"><span class="rnum">951</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;952&#39;)">
+          <div class="rlabel"><span class="rnum">952</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;953&#39;)">
+          <div class="rlabel"><span class="rnum">953</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;954&#39;)">
+          <div class="rlabel"><span class="rnum">954</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;955&#39;)">
+          <div class="rlabel"><span class="rnum">955</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;956&#39;)">
+          <div class="rlabel"><span class="rnum">956</span><span class="rtype" style="background:#EC489922;color:#EC4899">I</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;957&#39;)">
+          <div class="rlabel"><span class="rnum">957</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;958&#39;)">
+          <div class="rlabel"><span class="rnum">958</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;959&#39;)">
+          <div class="rlabel"><span class="rnum">959</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;960&#39;)">
+          <div class="rlabel"><span class="rnum">960</span><span class="rtype" style="background:#EF444422;color:#EF4444">K</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;961&#39;)">
+          <div class="rlabel"><span class="rnum">961</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;962&#39;)">
+          <div class="rlabel"><span class="rnum">962</span><span class="rtype" style="background:#EF444422;color:#EF4444">Kr</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;963&#39;)">
+          <div class="rlabel"><span class="rnum">963</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L9&#39;,&#39;965&#39;)">
+          <div class="rlabel"><span class="rnum">965</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div><div class="lvl-group">
+      <div class="lvl-hdr " onclick="tog(&#39;L10&#39;)">
+        <div class="lvl-hdr-label"><span class="lvl-badge">L10</span>
+          <div class="lvl-meta"><span class="lvl-name">Level 10 South</span><span class="lvl-cnt">17 rooms</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+      </div>
+      <div class=""><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1050&#39;)">
+          <div class="rlabel"><span class="rnum">1050</span><span class="rtype" style="background:#FF6B3522;color:#FF6B35">H</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1051&#39;)">
+          <div class="rlabel"><span class="rnum">1051</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1052&#39;)">
+          <div class="rlabel"><span class="rnum">1052</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1053&#39;)">
+          <div class="rlabel"><span class="rnum">1053</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1054&#39;)">
+          <div class="rlabel"><span class="rnum">1054</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1055&#39;)">
+          <div class="rlabel"><span class="rnum">1055</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1056&#39;)">
+          <div class="rlabel"><span class="rnum">1056</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1057&#39;)">
+          <div class="rlabel"><span class="rnum">1057</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1058&#39;)">
+          <div class="rlabel"><span class="rnum">1058</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1059&#39;)">
+          <div class="rlabel"><span class="rnum">1059</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1060&#39;)">
+          <div class="rlabel"><span class="rnum">1060</span><span class="rtype" style="background:#10B98122;color:#10B981">G</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1061&#39;)">
+          <div class="rlabel"><span class="rnum">1061</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1062&#39;)">
+          <div class="rlabel"><span class="rnum">1062</span><span class="rtype" style="background:#F59E0B22;color:#F59E0B">F</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1063&#39;)">
+          <div class="rlabel"><span class="rnum">1063</span><span class="rtype" style="background:#3B82F622;color:#3B82F6">A</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1064&#39;)">
+          <div class="rlabel"><span class="rnum">1064</span><span class="rtype" style="background:#EF444422;color:#EF4444">K</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1065&#39;)">
+          <div class="rlabel"><span class="rnum">1065</span><span class="rtype" style="background:#8B5CF622;color:#8B5CF6">B</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div><div class="rrow" onclick="openEdit(&#39;L10&#39;,&#39;1066&#39;)">
+          <div class="rlabel"><span class="rnum">1066</span><span class="rtype" style="background:#EF444422;color:#EF4444">Kr</span><div class="rstatus" style="background:var(--border)"></div></div>
+          <div class="rtl" style="width:2854.285714285714px;min-width:2854.285714285714px"></div>
+        </div></div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="tt" id="tt" style="left: 521px; top: 384px;"><h4>Room 353</h4>
+    <div class="tt-r"><span class="l">Level</span><span class="v">Level 3 South</span></div>
+    <div class="tt-r"><span class="l">Type</span><span class="v">B — Double Queen</span></div>
+    <div class="tt-r"><span class="l">Inspection</span><span class="v">2026-04-24</span></div>
+    <div class="tt-r"><span class="l">Re-inspection</span><span class="v">—</span></div>
+    <div class="tt-r"><span class="l">Handover</span><span class="v">2026-05-08</span></div>
+    <div class="tt-r"><span class="l">Status</span><span class="v">ready</span></div></div>
+<div class="modal-bg" id="mb"><div class="modal" id="md">
+    <h3>Room <span>565</span> — Level 5 · Type Ahc</h3>
+    <div class="frow">
+      <div class="fg"><label>Inspection Date</label><input type="date" id="ei" value=""></div>
+      <div class="fg"><label>Re-inspection Date</label><input type="date" id="eri" value=""></div>
+      <div class="fg"><label>Handover Date</label><input type="date" id="eho" value=""></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Status</label><select id="es">
+        <option value="not_started">Not Started</option>
+        <option value="in_progress">In Progress</option>
+        <option value="ready">Ready</option>
+        <option value="rework">Rework</option>
+        <option value="blocked">🚫 Blocked</option>
+      </select></div>
+      <div class="fg"><label>Priority</label><select id="ep">
+        <option value="" selected="">—</option>
+        <option value="1">1 Critical</option>
+        <option value="2">2 High</option>
+        <option value="3">3 Normal</option>
+      </select></div>
+    </div>
+    <div class="fg"><label>Notes</label><input type="text" id="en" value="" placeholder="Optional notes..."></div>
+    <div class="mactions">
+      <button class="btn btn-ghost" onclick="closeM()">Cancel</button>
+      
+      <button class="btn btn-primary" onclick="saveR(&#39;L5&#39;,&#39;565&#39;)">Save</button>
+    </div></div></div>
+<input type="file" id="imp" accept=".json" style="display:none" onchange="doImport(event)">
+
+
+
+<script>
+const ROOMS={
+"L3":[{r:"350",t:"H"},{r:"351",t:"A"},{r:"352",t:"G"},{r:"353",t:"B"},{r:"354",t:"I"},{r:"355",t:"A"},{r:"356",t:"I"},{r:"357",t:"B"},{r:"358",t:"G"},{r:"359",t:"A"},{r:"360",t:"G"},{r:"361",t:"B"},{r:"362",t:"F"},{r:"363",t:"A"},{r:"364",t:"F"},{r:"365",t:"B"},{r:"366",t:"G"},{r:"367",t:"Ghc"},{r:"368",t:"F"},{r:"369",t:"Fhc"},{r:"370",t:"H"},{r:"371",t:"H"}],
+"L4":[{r:"450",t:"H"},{r:"451",t:"A"},{r:"452",t:"G"},{r:"453",t:"B"},{r:"454",t:"I"},{r:"455",t:"A"},{r:"456",t:"I"},{r:"457",t:"B"},{r:"458",t:"G"},{r:"459",t:"A"},{r:"460",t:"H"},{r:"461",t:"B"},{r:"462",t:"F"},{r:"463",t:"A"},{r:"464",t:"G"},{r:"465",t:"B"},{r:"466",t:"H"},{r:"467",t:"Ghc"},{r:"468",t:"H"}],
+"L5":[{r:"550",t:"H"},{r:"551",t:"Ahc"},{r:"552",t:"Ghc"},{r:"553",t:"Ahc"},{r:"554",t:"Ihc"},{r:"555",t:"Ahc"},{r:"556",t:"Im"},{r:"557",t:"Ahc"},{r:"558",t:"G"},{r:"559",t:"Ahc"},{r:"560",t:"G"},{r:"561",t:"B"},{r:"562",t:"F"},{r:"563",t:"Ahc"},{r:"564",t:"F"},{r:"565",t:"Ahc"},{r:"566",t:"H"},{r:"567",t:"H"}],
+"L6":[{r:"650",t:"H"},{r:"651",t:"A"},{r:"652",t:"G"},{r:"653",t:"B"},{r:"654",t:"I"},{r:"655",t:"A"},{r:"656",t:"I"},{r:"657",t:"B"},{r:"658",t:"G"},{r:"659",t:"A"},{r:"660",t:"G"},{r:"661",t:"B"},{r:"662",t:"F"},{r:"663",t:"A"},{r:"664",t:"J"},{r:"664a",t:"J1"},{r:"665",t:"B"}],
+"L7":[{r:"750",t:"H"},{r:"751",t:"A"},{r:"752",t:"G"},{r:"753",t:"B"},{r:"754",t:"I"},{r:"755",t:"A"},{r:"756",t:"I"},{r:"757",t:"B"},{r:"758",t:"G"},{r:"759",t:"A"},{r:"760",t:"K"},{r:"761",t:"B"},{r:"762",t:"Kr"},{r:"763",t:"A"},{r:"765",t:"B"}],
+"L8":[{r:"850",t:"H"},{r:"851",t:"A"},{r:"852",t:"G"},{r:"853",t:"B"},{r:"854",t:"I"},{r:"855",t:"A"},{r:"856",t:"I"},{r:"857",t:"B"},{r:"858",t:"G"},{r:"859",t:"A"},{r:"860",t:"K"},{r:"861",t:"B"},{r:"862",t:"Kr"},{r:"863",t:"A"},{r:"865",t:"B"}],
+"L9":[{r:"950",t:"H"},{r:"951",t:"A"},{r:"952",t:"G"},{r:"953",t:"B"},{r:"954",t:"I"},{r:"955",t:"A"},{r:"956",t:"I"},{r:"957",t:"B"},{r:"958",t:"G"},{r:"959",t:"A"},{r:"960",t:"K"},{r:"961",t:"B"},{r:"962",t:"Kr"},{r:"963",t:"A"},{r:"965",t:"B"}],
+"L10":[{r:"1050",t:"H"},{r:"1051",t:"A"},{r:"1052",t:"G"},{r:"1053",t:"B"},{r:"1054",t:"F"},{r:"1055",t:"A"},{r:"1056",t:"G"},{r:"1057",t:"B"},{r:"1058",t:"F"},{r:"1059",t:"A"},{r:"1060",t:"G"},{r:"1061",t:"B"},{r:"1062",t:"F"},{r:"1063",t:"A"},{r:"1064",t:"K"},{r:"1065",t:"B"},{r:"1066",t:"Kr"}]
+};
+
+const LVLS=["L3","L4","L5","L6","L7","L8","L9","L10"];
+const TYPE_COLORS={A:"3B82F6",B:"8B5CF6",F:"F59E0B",G:"10B981",H:"FF6B35",I:"EC4899",J:"06B6D4",J1:"06B6D4",K:"EF4444",Kr:"EF4444",Ahc:"3B82F6",Ghc:"10B981",Fhc:"F59E0B",Ihc:"EC4899",Im:"EC4899"};
+const TYPE_LABELS={A:"King",B:"Double Queen",F:"King Corner",G:"King Deluxe",H:"Suite",I:"King Premium",J:"Junior Suite",J1:"Junior Suite 1",K:"Presidential",Kr:"Presidential Rev",Ahc:"King HC",Ghc:"King Dlx HC",Fhc:"King Crn HC",Ihc:"King Prm HC",Im:"King Prm M"};
+
+const TL_START=new Date(2026,3,1);
+const TL_END=new Date(2027,1,28);
+const DAY=864e5;
+
+let data={};
+let collapsed=new Set();
+let filt='all';
+let typeFilt=null;
+let ww=40;
+
+try{const s=localStorage.getItem('ghgc_south_hd');if(s)data=JSON.parse(s);}catch(e){}
+function save(){localStorage.setItem('ghgc_south_hd',JSON.stringify(data));}
+
+function k(lv,rm){return lv+':'+rm;}
+function d2x(d){return((d-TL_START)/DAY/7)*ww;}
+function tw(){return d2x(TL_END);}
+function lvLabel(l){return l.replace('L','Level ');}
+
+// KPIs
+function renderKPI(){
+  let tot=0,sched=0,iCnt=0,riCnt=0,hoCnt=0,blk=0;
+  LVLS.forEach(l=>ROOMS[l].forEach(r=>{
+    tot++;
+    const d=data[k(l,r.r)];
+    if(d){if(d.i)iCnt++;if(d.ri)riCnt++;if(d.ho)hoCnt++;if(d.i||d.ri||d.ho)sched++;if(d.s==='blocked')blk++;}
+  }));
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="kpi-dot" style="background:var(--orange)"></div><div><div class="kpi-num">${tot}</div><div class="kpi-label">Total Rooms</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--blue)"></div><div><div class="kpi-num">${iCnt}</div><div class="kpi-label">Inspection</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--yellow)"></div><div><div class="kpi-num">${riCnt}</div><div class="kpi-label">Re-inspection</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--green)"></div><div><div class="kpi-num">${hoCnt}</div><div class="kpi-label">Handover</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--red)"></div><div><div class="kpi-num">${blk}</div><div class="kpi-label">Blocked</div></div></div>
+    <div class="kpi"><div class="kpi-dot" style="background:var(--text-muted)"></div><div><div class="kpi-num">${tot-sched}</div><div class="kpi-label">Pending</div></div></div>
+  `;
+}
+
+// Filters
+function renderFilters(){
+  let h=`<button class="pill ${filt==='all'?'on':''}" onclick="setF('all')">All Levels</button>`;
+  LVLS.forEach(l=>{h+=`<button class="pill ${filt===l?'on':''}" onclick="setF('${l}')">${l}</button>`;});
+  document.getElementById('filters').innerHTML=h;
+}
+function setF(f){filt=f;renderFilters();renderGantt();}
+
+// Type legend
+function renderTypeLeg(){
+  const types=[...new Set(LVLS.flatMap(l=>ROOMS[l].map(r=>r.t)))].sort();
+  let h=`<span class="type-legend-title">Room Types</span>`;
+  types.forEach(t=>{
+    const c=TYPE_COLORS[t]||'888';
+    const active=typeFilt===t?'active':'';
+    h+=`<div class="type-chip ${active}" onclick="toggleType('${t}')"><div class="tcdot" style="background:#${c}"></div>${t}</div>`;
+  });
+  document.getElementById('typeLegend').innerHTML=h;
+}
+function toggleType(t){typeFilt=typeFilt===t?null:t;renderTypeLeg();renderGantt();}
+
+// Zoom
+function zIn(){ww=Math.min(100,ww+10);document.getElementById('zl').textContent=ww;renderGantt();}
+function zOut(){ww=Math.max(15,ww-10);document.getElementById('zl').textContent=ww;renderGantt();}
+
+// Gantt
+function renderGantt(){
+  const W=tw();
+  // Month headers
+  let mh='';
+  let d=new Date(TL_START);
+  while(d<TL_END){
+    const ms=new Date(d.getFullYear(),d.getMonth(),1);
+    const me=new Date(d.getFullYear(),d.getMonth()+1,0);
+    const mn=ms.toLocaleString('en',{month:'short',year:'numeric'});
+    let wks='';
+    let wd=new Date(Math.max(ms,TL_START));
+    while(wd<=me&&wd<TL_END){
+      wks+=`<div class="wk" style="width:${ww}px">${wd.getDate()}</div>`;
+      wd=new Date(wd.getTime()+7*DAY);
+    }
+    mh+=`<div class="tl-month"><div class="mo-label">${mn}</div><div class="mo-weeks">${wks}</div></div>`;
+    d=new Date(d.getFullYear(),d.getMonth()+1,1);
+  }
+
+  // Body
+  let body='';
+  for(const lv of LVLS){
+    if(filt!=='all'&&filt!==lv)continue;
+    const rooms=ROOMS[lv];
+    const col=collapsed.has(lv);
+
+    // Filtered rooms
+    const fRooms=typeFilt?rooms.filter(r=>r.t===typeFilt):rooms;
+
+    // Summary bar
+    let ea=null,la=null;
+    rooms.forEach(r=>{
+      const rd=data[k(lv,r.r)];
+      if(rd){
+        [rd.i,rd.ri,rd.ho].forEach(v=>{
+          if(v){const dt=new Date(v);if(!ea||dt<ea)ea=dt;if(!la||dt>la)la=dt;}
+        });
+      }
+    });
+    let sb='';
+    if(ea){
+      const x=d2x(ea);
+      const w=la?Math.max(d2x(la)-x,8):ww*2;
+      sb=`<div class="sum-bar" style="left:${x}px;width:${w}px"></div>`;
+    }
+
+    let rowsHtml='';
+    if(!col){
+      fRooms.forEach(rm=>{
+        const key=k(lv,rm.r);
+        const rd=data[key]||{};
+        const tc=TYPE_COLORS[rm.t]||'888';
+        const sc=rd.s==='ready'?'var(--green)':rd.s==='in_progress'?'var(--yellow)':rd.s==='rework'?'var(--purple)':rd.s==='blocked'?'var(--red)':'var(--border)';
+
+        let bars='';
+        const isBlocked=rd.s==='blocked';
+
+        if(isBlocked){
+          bars+=`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(135deg,transparent,transparent 6px,rgba(239,68,68,0.08) 6px,rgba(239,68,68,0.08) 12px);pointer-events:none"></div>`;
+          bars+=`<div style="position:absolute;top:10px;left:12px;font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;font-family:'JetBrains Mono';opacity:0.7;pointer-events:none">BLOCKED</div>`;
+        }
+
+        // Build bar from earliest to latest date
+        const dates=[rd.i,rd.ri,rd.ho].filter(Boolean).map(v=>new Date(v));
+        if(dates.length>=2){
+          const minD=new Date(Math.min(...dates));
+          const maxD=new Date(Math.max(...dates));
+          const x1=d2x(minD),x2=d2x(maxD);
+          const w=Math.max(x2-x1,6);
+          bars+=`<div class="gbar" style="left:${x1}px;width:${w}px;background:linear-gradient(90deg,#${tc},#${tc}aa)${isBlocked?';opacity:0.3':''}"
+            onmouseenter="showTT(event,'${lv}','${rm.r}')" onmouseleave="hideTT()"></div>`;
+        } else if(dates.length===1){
+          const x=d2x(dates[0]);
+          bars+=`<div class="gbar" style="left:${x}px;width:${ww*1.5}px;background:#${tc};opacity:${isBlocked?'0.15':'0.4'}"
+            onmouseenter="showTT(event,'${lv}','${rm.r}')" onmouseleave="hideTT()"></div>`;
+        }
+
+        // Milestones
+        if(rd.i) bars+=`<div class="mstone inspection" style="left:${d2x(new Date(rd.i))}px" onmouseenter="showTT(event,'${lv}','${rm.r}')" onmouseleave="hideTT()"><div class="mdiamond"></div></div>`;
+        if(rd.ri) bars+=`<div class="mstone reinspection" style="left:${d2x(new Date(rd.ri))}px" onmouseenter="showTT(event,'${lv}','${rm.r}')" onmouseleave="hideTT()"><div class="mdiamond"></div></div>`;
+        if(rd.ho) bars+=`<div class="mstone handover" style="left:${d2x(new Date(rd.ho))}px" onmouseenter="showTT(event,'${lv}','${rm.r}')" onmouseleave="hideTT()"><div class="mdiamond"></div></div>`;
+
+        const isHc=rm.t.toLowerCase().includes('hc')||rm.t.toLowerCase().includes('m');
+        const tag=isHc?`<span class="rtype" style="background:rgba(139,92,246,0.15);color:#8B5CF6">HC</span>`
+          :`<span class="rtype" style="background:#${tc}22;color:#${tc}">${rm.t}</span>`;
+
+        rowsHtml+=`<div class="rrow" onclick="openEdit('${lv}','${rm.r}')">
+          <div class="rlabel"><span class="rnum">${rm.r}</span>${tag}<div class="rstatus" style="background:${sc}"></div></div>
+          <div class="rtl" style="width:${W}px;min-width:${W}px">${bars}</div>
+        </div>`;
+      });
+    }
+
+    body+=`<div class="lvl-group">
+      <div class="lvl-hdr ${col?'collapsed':''}" onclick="tog('${lv}')">
+        <div class="lvl-hdr-label"><span class="lvl-badge">${lv}</span>
+          <div class="lvl-meta"><span class="lvl-name">${lvLabel(lv)} South</span><span class="lvl-cnt">${rooms.length} rooms${typeFilt?' · '+fRooms.length+' shown':''}</span></div>
+          <span class="caret">▾</span>
+        </div>
+        <div class="lvl-tl" style="width:${W}px;min-width:${W}px">${sb}</div>
+      </div>
+      <div class="${col?'hidden':''}">${rowsHtml}</div>
+    </div>`;
+  }
+
+  // Today
+  const now=new Date();
+  let todayHtml='';
+  if(now>=TL_START&&now<=TL_END){
+    todayHtml=`<div class="today-line" style="left:${200+d2x(now)}px"></div>`;
+  }
+
+  document.getElementById('gc').innerHTML=`<div style="position:relative">
+    <div class="tl-header"><div class="label-col">Room</div><div class="tl-dates" style="width:${W}px;min-width:${W}px">${mh}</div></div>
+    <div style="position:relative">${todayHtml}${body}</div>
+  </div>`;
+}
+
+function tog(lv){collapsed.has(lv)?collapsed.delete(lv):collapsed.add(lv);renderGantt();}
+
+// Tooltip
+function showTT(e,lv,rm){
+  const rd=data[k(lv,rm)]||{};
+  const rObj=ROOMS[lv].find(r=>r.r===rm);
+  const tt=document.getElementById('tt');
+  tt.innerHTML=`<h4>Room ${rm}</h4>
+    <div class="tt-r"><span class="l">Level</span><span class="v">${lvLabel(lv)} South</span></div>
+    <div class="tt-r"><span class="l">Type</span><span class="v">${rObj?rObj.t+' — '+(TYPE_LABELS[rObj.t]||''):'—'}</span></div>
+    <div class="tt-r"><span class="l">Inspection</span><span class="v">${rd.i||'—'}</span></div>
+    <div class="tt-r"><span class="l">Re-inspection</span><span class="v">${rd.ri||'—'}</span></div>
+    <div class="tt-r"><span class="l">Handover</span><span class="v">${rd.ho||'—'}</span></div>
+    <div class="tt-r"><span class="l">Status</span><span class="v" ${rd.s==='blocked'?'style="color:#EF4444"':''}>${rd.s==='blocked'?'🚫 BLOCKED':(rd.s||'not set').replace('_',' ')}</span></div>`;
+  tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-8)+'px';
+  tt.classList.add('vis');
+}
+function hideTT(){document.getElementById('tt').classList.remove('vis');}
+
+// Edit modal
+function openEdit(lv,rm){
+  const key=k(lv,rm);const rd=data[key]||{};
+  const rObj=ROOMS[lv].find(r=>r.r===rm);
+  document.getElementById('md').innerHTML=`
+    <h3>Room <span>${rm}</span> — ${lvLabel(lv)} · Type ${rObj?rObj.t:''}</h3>
+    <div class="frow">
+      <div class="fg"><label>Inspection Date</label><input type="date" id="ei" value="${rd.i||''}"></div>
+      <div class="fg"><label>Re-inspection Date</label><input type="date" id="eri" value="${rd.ri||''}"></div>
+      <div class="fg"><label>Handover Date</label><input type="date" id="eho" value="${rd.ho||''}"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Status</label><select id="es">
+        <option value="not_started" ${rd.s==='not_started'?'selected':''}>Not Started</option>
+        <option value="in_progress" ${rd.s==='in_progress'?'selected':''}>In Progress</option>
+        <option value="ready" ${rd.s==='ready'?'selected':''}>Ready</option>
+        <option value="rework" ${rd.s==='rework'?'selected':''}>Rework</option>
+        <option value="blocked" ${rd.s==='blocked'?'selected':''}>🚫 Blocked</option>
+      </select></div>
+      <div class="fg"><label>Priority</label><select id="ep">
+        <option value="" ${!rd.p?'selected':''}>—</option>
+        <option value="1" ${rd.p==='1'?'selected':''}>1 Critical</option>
+        <option value="2" ${rd.p==='2'?'selected':''}>2 High</option>
+        <option value="3" ${rd.p==='3'?'selected':''}>3 Normal</option>
+      </select></div>
+    </div>
+    <div class="fg"><label>Notes</label><input type="text" id="en" value="${rd.n||''}" placeholder="Optional notes..."></div>
+    <div class="mactions">
+      <button class="btn btn-ghost" onclick="closeM()">Cancel</button>
+      ${(rd.i||rd.ri||rd.ho)?'<button class="btn btn-ghost" style="color:var(--red);border-color:var(--red)" onclick="clearR(\''+lv+'\',\''+rm+'\')">Clear</button>':''}
+      <button class="btn btn-primary" onclick="saveR('${lv}','${rm}')">Save</button>
+    </div>`;
+  document.getElementById('mb').classList.add('open');
+}
+function saveR(lv,rm){
+  data[k(lv,rm)]={i:document.getElementById('ei').value||null,ri:document.getElementById('eri').value||null,ho:document.getElementById('eho').value||null,s:document.getElementById('es').value,p:document.getElementById('ep').value||null,n:document.getElementById('en').value||null};
+  save();closeM();renderAll();
+}
+function clearR(lv,rm){delete data[k(lv,rm)];save();closeM();renderAll();}
+function closeM(){document.getElementById('mb').classList.remove('open');}
+
+// Bulk
+function openBulk(){
+  const opts=LVLS.map(l=>`<option value="${l}">${lvLabel(l)} South (${ROOMS[l].length} rooms)</option>`).join('');
+  document.getElementById('md').innerHTML=`
+    <h3>Bulk <span>Set Dates</span></h3>
+    <div class="fg"><label>Level</label><select id="bg">${opts}</select></div>
+    <div class="frow">
+      <div class="fg"><label>Inspection Date</label><input type="date" id="bi"></div>
+      <div class="fg"><label>Re-inspection Date</label><input type="date" id="bri"></div>
+      <div class="fg"><label>Handover Date</label><input type="date" id="bho"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Stagger (days between rooms)</label><input type="number" id="bs" value="0" min="0" max="14"></div>
+      <div class="fg"><label>Status</label><select id="bst">
+        <option value="not_started">Not Started</option>
+        <option value="in_progress">In Progress</option>
+        <option value="ready">Ready</option>
+        <option value="blocked">🚫 Blocked</option>
+      </select></div>
+    </div>
+    <div class="mactions">
+      <button class="btn btn-ghost" onclick="closeM()">Cancel</button>
+      <button class="btn btn-primary" onclick="applyBulk()">Apply</button>
+    </div>`;
+  document.getElementById('mb').classList.add('open');
+}
+function applyBulk(){
+  const lv=document.getElementById('bg').value;
+  const iStr=document.getElementById('bi').value;
+  const riStr=document.getElementById('bri').value;
+  const hoStr=document.getElementById('bho').value;
+  const st=parseInt(document.getElementById('bs').value)||0;
+  const status=document.getElementById('bst').value;
+  if(!iStr&&!riStr&&!hoStr){alert('Set at least one date.');return;}
+  ROOMS[lv].forEach((rm,idx)=>{
+    let iD=null,riD=null,hoD=null;
+    if(iStr){iD=new Date(iStr);iD.setDate(iD.getDate()+idx*st);iD=iD.toISOString().split('T')[0];}
+    if(riStr){riD=new Date(riStr);riD.setDate(riD.getDate()+idx*st);riD=riD.toISOString().split('T')[0];}
+    if(hoStr){hoD=new Date(hoStr);hoD.setDate(hoD.getDate()+idx*st);hoD=hoD.toISOString().split('T')[0];}
+    data[k(lv,rm.r)]={i:iD,ri:riD,ho:hoD,s:status,p:null,n:null};
+  });
+  save();closeM();renderAll();
+}
+
+// Export / Import
+function exportJSON(){
+  const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='GHGC_South_Handover.json';a.click();
+}
+function doImport(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{try{data=JSON.parse(ev.target.result);save();renderAll();}catch(e){alert('Invalid JSON');}};
+  r.readAsText(f);
+}
+
+function renderAll(){renderKPI();renderFilters();renderTypeLeg();renderGantt();}
+
+document.getElementById('mb').addEventListener('click',function(e){if(e.target===this)closeM();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
+
+renderAll();
+</script>
+
+
+</body></html>
